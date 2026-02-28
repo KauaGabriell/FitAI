@@ -1,0 +1,19 @@
+# Bootcamp Files (Adicione suas extens�es aqui)
+node_modules/
+dist/
+build/
+.env
+
+# AIOS Core (IGNORE COMPLETELY FOR GITHUB)
+.aios/
+.aios-core/
+.gemini/
+.codex/
+squads/
+AIOS/
+
+# System & IDE
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
