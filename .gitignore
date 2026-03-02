@@ -27,4 +27,5 @@ Thumbs.db
 .aios/
 .aios-core/
 .gemini/rules/AIOS/
-/AIOS
+.gemini/
+squads/
