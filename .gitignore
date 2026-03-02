@@ -29,3 +29,5 @@ Thumbs.db
 .gemini/rules/AIOS/
 .gemini/
 squads/
+
+/src/generated/prisma
