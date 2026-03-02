@@ -1,14 +1,15 @@
 import 'dotenv/config';
-import Fastify from 'fastify';
+
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
-import z from 'zod';
+import Fastify from 'fastify';
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod';
+import z from 'zod';
 
 const app = Fastify({
   logger: true,
