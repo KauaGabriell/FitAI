@@ -88,8 +88,8 @@ app.withTypeProvider<ZodTypeProvider>().route({
       ),
     }),
     response: {
-      id: z.uuid(),
       201: z.object({
+        id: z.string().uuid(),
         name: z.string().trim().min(1),
         workoutDays: z.array(
           z.object({
