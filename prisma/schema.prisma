@@ -34,6 +34,7 @@ model WorkoutPlan {
   userId      String
   user        User         @relation(fields: [userId], references: [id])
   workoutDays WorkoutDay[]
+  isActive Boolean
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -56,7 +57,7 @@ model WorkoutDay {
   isRest                   Boolean           @default(false)
   weekDay                  WeekDay
   exercises                WorkoutExercise[]
-  estimatedDurationSeconds Int
+  estimatedDurationInSeconds Int
   createdAt                DateTime          @default(now())
   updatedAt                DateTime          @updatedAt
 }
