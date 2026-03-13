@@ -4,7 +4,7 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
 import { auth } from '../lib/auth.js';
-import { ErrorSchema } from '../schemas/index.js';
+import { ErrorSchema, HomeDataSchema } from '../schemas/index.js';
 import { GetHomeData } from '../usecases/GetHomeData.js';
 
 export const homeRoutes = async (app: FastifyInstance) => {
@@ -18,24 +18,7 @@ export const homeRoutes = async (app: FastifyInstance) => {
         date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Format must be YYYY-MM-DD'),
       }),
       response: {
-        200: z.object({
-          activeWorkoutPlanId: z.string().uuid().nullable(),
-          todayWorkoutDay: z.object({
-            workoutPlanId: z.string().uuid(),
-            id: z.uuid(),
-            name: z.string(),
-            isRest: z.boolean(),
-            weekDay: z.string(),
-            estimatedDurationInSeconds: z.number(),
-            coverImageUrl: z.string().nullable().optional(),
-            exercisesCount: z.number(),
-          }).nullable(),
-          workoutStreak: z.number(),
-          consistencyByDay: z.record(z.string(), z.object({
-            workoutDayCompleted: z.boolean(),
-            workoutDayStarted: z.boolean(),
-          })),
-        }),
+        200: HomeDataSchema,
         400: ErrorSchema,
         401: ErrorSchema,
         500: ErrorSchema,
