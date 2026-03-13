@@ -19,7 +19,7 @@ import {
   WorkoutPlanDetailsSchema,
   WorkoutPlanListSchema,
   WorkoutPlanSchema,
-  } from '../schemas/index.ts';
+  } from '../schemas/index.js';
   import { CompleteWorkoutSession } from '../usecases/CompleteWorkoutSession.js';
   import { CreateWorkoutPlan } from '../usecases/CreateWorkoutPlan.js';
   import { GetWorkoutDayDetails } from '../usecases/GetWorkoutDayDetails.js';
