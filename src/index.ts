@@ -14,6 +14,7 @@ import z from 'zod';
 
 import { auth } from './lib/auth.js';
 import { homeRoutes } from './routes/home.js';
+import { statsRoutes } from './routes/stats.js';
 import { workoutPlanRoutes } from './routes/workoutPlan.js';
 
 const app = Fastify({
@@ -66,6 +67,7 @@ app.setSerializerCompiler(serializerCompiler);
 //Routes
 await app.register(workoutPlanRoutes, { prefix: '/workout-plans' });
 await app.register(homeRoutes, { prefix: '/home' });
+await app.register(statsRoutes, { prefix: '/stats' });
 
 app.withTypeProvider<ZodTypeProvider>().route({
   method: 'GET',

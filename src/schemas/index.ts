@@ -107,3 +107,48 @@ export const HomeDataSchema = z.object({
     })
   ),
 });
+
+export const StatsSchema = z.object({
+  workoutStreak: z.number(),
+  consistencyByDay: z.record(
+    z.string(),
+    z.object({
+      workoutDayCompleted: z.boolean(),
+      workoutDayStarted: z.boolean(),
+    })
+  ),
+  completedWorkoutsCount: z.number(),
+  conclusionRate: z.number(),
+  totalTimeInSeconds: z.number(),
+});
+
+export const WorkoutPlanListSchema = z.array(
+  z.object({
+    id: z.uuid(),
+    name: z.string(),
+    isActive: z.boolean(),
+    coverImageUrl: z.string().nullable().optional(),
+    createdAt: z.string().datetime(),
+    updatedAt: z.string().datetime(),
+    workoutDays: z.array(
+      z.object({
+        id: z.uuid(),
+        name: z.string(),
+        isRest: z.boolean(),
+        weekDay: z.string(),
+        coverImageUrl: z.string().nullable().optional(),
+        estimatedDurationInSeconds: z.number(),
+        exercises: z.array(
+          z.object({
+            id: z.uuid(),
+            order: z.number(),
+            name: z.string(),
+            sets: z.number(),
+            reps: z.number(),
+            restTimeInSeconds: z.number(),
+          })
+        ),
+      })
+    ),
+  })
+);
