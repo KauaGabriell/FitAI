@@ -4,6 +4,7 @@ import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
 import {
+  BadRequestError,
   ConflictError,
   NotFoundError,
   UnauthorizedError,
@@ -11,6 +12,7 @@ import {
 } from '../errors/index.js';
 import { auth } from '../lib/auth.js';
 import { ErrorSchema, WorkoutPlanSchema } from '../schemas/index.js';
+import { CompleteWorkoutSession } from '../usecases/CompleteWorkoutSession.js';
 import { CreateWorkoutPlan } from '../usecases/CreateWorkoutPlan.js';
 import { StartWorkoutSession } from '../usecases/StartWorkoutSession.js';
 
@@ -115,6 +117,91 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
           return reply.status(400).send({
             error: error.message,
             code: 'WORKOUT_PLAN_NOT_ACTIVE',
+          });
+        }
+        if (error instanceof ConflictError) {
+          return reply.status(409).send({
+            error: error.message,
+            code: 'CONFLICT',
+          });
+        }
+        return reply.status(500).send({
+          error: 'Internal Server Error',
+          code: 'INTERNAL_SERVER_ERROR',
+        });
+      }
+    },
+  });
+
+  app.withTypeProvider<ZodTypeProvider>().route({
+    method: 'PATCH',
+    url: '/:workoutPlanId/days/:workoutDayId/sessions/:sessionId',
+    schema: {
+      tags: ['Workout Plan'],
+      summary: 'Complete a workout session',
+      params: z.object({
+        workoutPlanId: z.uuid(),
+        workoutDayId: z.uuid(),
+        sessionId: z.uuid(),
+      }),
+      body: z.object({
+        completedAt: z.string().datetime({ offset: true }),
+      }),
+      response: {
+        200: z.object({
+          id: z.uuid(),
+          completedAt: z.string().datetime({ offset: true }),
+          startedAt: z.string().datetime({ offset: true }),
+        }),
+        400: ErrorSchema,
+        401: ErrorSchema,
+        404: ErrorSchema,
+        409: ErrorSchema,
+        500: ErrorSchema,
+      },
+    },
+    handler: async (request, reply) => {
+      try {
+        const session = await auth.api.getSession({
+          headers: fromNodeHeaders(request.headers),
+        });
+        if (!session) {
+          return reply.status(401).send({
+            error: 'Unauthorized',
+            code: 'UNAUTHORIZED',
+          });
+        }
+        const completeWorkoutSession = new CompleteWorkoutSession();
+        const result = await completeWorkoutSession.execute({
+          userId: session.user.id,
+          workoutPlanId: request.params.workoutPlanId,
+          workoutDayId: request.params.workoutDayId,
+          sessionId: request.params.sessionId,
+          completedAt: new Date(request.body.completedAt),
+        });
+        return reply.status(200).send({
+          id: result.id,
+          completedAt: result.completedAt.toISOString(),
+          startedAt: result.startedAt.toISOString(),
+        });
+      } catch (error) {
+        app.log.error(error);
+        if (error instanceof NotFoundError) {
+          return reply.status(404).send({
+            error: error.message,
+            code: 'NOT_FOUND',
+          });
+        }
+        if (error instanceof UnauthorizedError) {
+          return reply.status(401).send({
+            error: error.message,
+            code: 'UNAUTHORIZED',
+          });
+        }
+        if (error instanceof BadRequestError) {
+          return reply.status(400).send({
+            error: error.message,
+            code: 'BAD_REQUEST',
           });
         }
         if (error instanceof ConflictError) {
