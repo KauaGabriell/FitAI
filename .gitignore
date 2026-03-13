@@ -31,3 +31,6 @@ Thumbs.db
 squads/
 
 /src/generated/prisma
+
+# MCPS CONFIGS
+/.vscode/mcp.json

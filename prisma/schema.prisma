@@ -29,14 +29,15 @@ model User {
 }
 
 model WorkoutPlan {
-  id          String       @id @default(uuid())
-  name        String
-  userId      String
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  workoutDays WorkoutDay[]
-  isActive    Boolean
-  createdAt   DateTime     @default(now()) @db.Timestamptz()
-  updatedAt   DateTime     @updatedAt @db.Timestamptz()
+  id            String       @id @default(uuid())
+  name          String
+  coverImageUrl String?
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutDays   WorkoutDay[]
+  isActive      Boolean
+  createdAt     DateTime     @default(now()) @db.Timestamptz()
+  updatedAt     DateTime     @updatedAt @db.Timestamptz()
 }
 
 enum WeekDay {
@@ -58,6 +59,7 @@ model WorkoutDay {
   weekDay                    WeekDay
   exercises                  WorkoutExercise[]
   sessions                   WorkoutSession[]
+  coverImageUrl              String?
   estimatedDurationInSeconds Int
   createdAt                  DateTime          @default(now()) @db.Timestamptz()
   updatedAt                  DateTime          @updatedAt @db.Timestamptz()
