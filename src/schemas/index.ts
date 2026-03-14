@@ -122,6 +122,19 @@ export const StatsSchema = z.object({
   totalTimeInSeconds: z.number(),
 });
 
+export const UserTrainDataSchema = z.object({
+  userId: z.string(),
+  userName: z.string(),
+  weightInGrams: z.number().positive(),
+  heightInCentimeters: z.number().positive(),
+  age: z.number().int().positive(),
+  bodyFatPercentage: z.number().min(0).max(1),
+});
+
+export const UpsertUserTrainDataSchema = UserTrainDataSchema.omit({
+  userName: true,
+});
+
 export const WorkoutPlanListSchema = z.array(
   z.object({
     id: z.uuid(),
