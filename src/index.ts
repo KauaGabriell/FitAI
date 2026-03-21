@@ -33,7 +33,7 @@ await app.register(fastifySwagger, {
     servers: [
       {
         description: 'Localhost',
-        url: 'http://localhost:3000',
+        url: 'http://localhost:8080',
       },
     ],
   },
@@ -41,7 +41,7 @@ await app.register(fastifySwagger, {
 });
 
 await app.register(fastifyCors, {
-  origin: ['http://localhost:3000'],
+  origin: ['http://localhost:8080'],
   credentials: true,
 });
 
