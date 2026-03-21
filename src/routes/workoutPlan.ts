@@ -19,19 +19,20 @@ import {
   WorkoutPlanDetailsSchema,
   WorkoutPlanListSchema,
   WorkoutPlanSchema,
-  } from '../schemas/index.js';
-  import { CompleteWorkoutSession } from '../usecases/CompleteWorkoutSession.js';
-  import { CreateWorkoutPlan } from '../usecases/CreateWorkoutPlan.js';
-  import { GetWorkoutDayDetails } from '../usecases/GetWorkoutDayDetails.js';
-  import { GetWorkoutPlanById } from '../usecases/GetWorkoutPlanById.js';
-  import { GetWorkoutPlans } from '../usecases/GetWorkoutPlans.js';
-  import { StartWorkoutSession } from '../usecases/StartWorkoutSession.js';
+} from '../schemas/index.js';
+import { CompleteWorkoutSession } from '../usecases/CompleteWorkoutSession.js';
+import { CreateWorkoutPlan } from '../usecases/CreateWorkoutPlan.js';
+import { GetWorkoutDayDetails } from '../usecases/GetWorkoutDayDetails.js';
+import { GetWorkoutPlanById } from '../usecases/GetWorkoutPlanById.js';
+import { GetWorkoutPlans } from '../usecases/GetWorkoutPlans.js';
+import { StartWorkoutSession } from '../usecases/StartWorkoutSession.js';
 
-  export const workoutPlanRoutes = async (app: FastifyInstance) => {
+export const workoutPlanRoutes = async (app: FastifyInstance) => {
   app.withTypeProvider<ZodTypeProvider>().route({
     method: 'GET',
     url: '/',
     schema: {
+      operationId: 'listWorkoutPlans',
       tags: ['Workout Plan'],
       summary: 'List workout plans',
       querystring: z.object({
@@ -67,7 +68,7 @@ import {
             ...plan,
             createdAt: plan.createdAt.toISOString(),
             updatedAt: plan.updatedAt.toISOString(),
-          }))
+          })),
         );
       } catch (error) {
         app.log.error(error);
@@ -84,6 +85,7 @@ import {
 
     url: '/:workoutPlanId/days/:workoutDayId',
     schema: {
+      operationId: 'getWorkoutDayDetails',
       tags: ['Workout Plan'],
       summary: 'Get workout day details',
       params: z.object({
@@ -148,6 +150,7 @@ import {
     method: 'GET',
     url: '/:workoutPlanId',
     schema: {
+      operationId: 'getWorkoutPlan',
       tags: ['Workout Plan'],
       summary: 'Get workout plan by ID',
       params: z.object({
@@ -203,6 +206,7 @@ import {
     method: 'POST',
     url: '/',
     schema: {
+      operationId: 'createWorkoutPlan',
       tags: ['Workout Plan'],
       summary: 'Create a Workout Plan',
       body: WorkoutPlanSchema.omit({ id: true }),
@@ -246,6 +250,7 @@ import {
     method: 'POST',
     url: '/:workoutPlanId/days/:workoutDayId',
     schema: {
+      operationId: 'startWorkoutSession',
       tags: ['Workout Plan'],
       summary: 'Start a workout session',
       params: z.object({
@@ -317,6 +322,7 @@ import {
     method: 'PATCH',
     url: '/:workoutPlanId/days/:workoutDayId/sessions/:sessionId',
     schema: {
+      operationId: 'completeWorkoutSession',
       tags: ['Workout Plan'],
       summary: 'Complete a workout session',
       params: z.object({
