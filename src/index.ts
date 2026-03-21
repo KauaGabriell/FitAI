@@ -141,7 +141,7 @@ app.route({
 
 const start = async () => {
   try {
-    await app.listen({ port: Number(process.env.PORT ?? 3000) });
+    await app.listen({ port: Number(process.env.PORT ?? 8080) });
   } catch (err) {
     app.log.error(err);
     process.exit(1);
