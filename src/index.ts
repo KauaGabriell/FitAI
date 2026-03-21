@@ -13,11 +13,11 @@ import {
 import z from 'zod';
 
 import { auth } from './lib/auth.js';
+import { aiRoutes } from './routes/ai.js';
 import { homeRoutes } from './routes/home.js';
 import { statsRoutes } from './routes/stats.js';
-import { workoutPlanRoutes } from './routes/workoutPlan.js';
 import { userRoutes } from './routes/user.js';
-import { aiRoutes } from './routes/ai.js';
+import { workoutPlanRoutes } from './routes/workoutPlan.js';
 
 const app = Fastify({
   logger: true,
@@ -83,7 +83,6 @@ app.withTypeProvider<ZodTypeProvider>().route({
     return app.swagger();
   },
 });
-
 
 app.withTypeProvider<ZodTypeProvider>().route({
   method: 'GET',
