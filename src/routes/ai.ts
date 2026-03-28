@@ -1,4 +1,4 @@
-import { openai } from '@ai-sdk/openai';
+import { google } from '@ai-sdk/google';
 import {
   convertToModelMessages,
   stepCountIs,
@@ -32,7 +32,7 @@ export const aiRoutes = async (app: FastifyInstance) => {
 
     const { messages } = request.body as { messages: UIMessage[] };
     const result = streamText({
-      model: openai('gpt-4o-mini'),
+      model: google('gemini-2.5-flash'),
       system: `Você é um personal trainer virtual especialista em montagem de planos de treino.
 Seu tom é amigável, motivador, usa linguagem simples e sem jargões técnicos, pois seu público é leigo.
 
@@ -146,6 +146,7 @@ Alterne entre as duas opções de cada categoria.`,
       messages: await convertToModelMessages(messages),
     });
 
-    return result.toTextStreamResponse();
+    // AI SDK v6: useChat espera UI message stream protocol
+    return result.toUIMessageStreamResponse();
   });
 };
