@@ -32,7 +32,7 @@ export const aiRoutes = async (app: FastifyInstance) => {
 
     const { messages } = request.body as { messages: UIMessage[] };
     const result = streamText({
-      model: google('gemini-2.5-flash'),
+      model: google('gemini-2.5-flash-lite'),
       system: `Você é um personal trainer virtual especialista em montagem de planos de treino.
 Seu tom é amigável, motivador, usa linguagem simples e sem jargões técnicos, pois seu público é leigo.
 
